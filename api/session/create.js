@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const async = require('async')
 const UserSchema = require('../../models/User')
 const User = mongoose.model('User', UserSchema)
-
+const io = require('../../lib/socket').io
 // In a real world app, this would be set in .env file
 const JWT_TOKEN_SECRET = 'chatron-chat-app'
 const tokenExpiry = moment().add(7, 'days').valueOf();
@@ -22,6 +22,9 @@ module.exports = (req, res) => {
           iss: req.body.username,
           exp: tokenExpiry
         }, JWT_TOKEN_SECRET)
+
+        user.set({ currentlyOnline: true })
+        io.emit('addUser', user)
 
         return res.status(200).json({
           user,
