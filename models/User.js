@@ -12,7 +12,7 @@ var UserSchema = mongoose.Schema({
 	username: String,
 	password: String,
 	name: String,
-	currentlyOnline: { Boolean, default: false }
+	currentlyOnline: { type: Boolean, default: false }
 });
 
 /**
