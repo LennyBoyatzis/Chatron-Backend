@@ -3,7 +3,6 @@ const UserSchema = require('../../models/User')
 const User = mongoose.model('User', UserSchema)
 
 module.exports = (req, res) => {
-  console.log("Should be here?")
   User
     .find()
     .where('currentlyOnline', true)
