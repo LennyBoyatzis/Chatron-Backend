@@ -5,9 +5,6 @@ const UserSchema = require('../../models/User')
 const User = mongoose.model('User', UserSchema)
 const io = require('../../lib/socket').io
 
-// In a real world app, this would be set in .env file
-const JWT_TOKEN_SECRET = 'chatron-chat-app'
-const tokenExpiry = moment().add(7, 'days').valueOf();
 
 module.exports = (req, res) => {
   User
@@ -15,20 +12,10 @@ module.exports = (req, res) => {
     .exec((err, user) => {
       if (err) return res.status(500).json(err)
       if (!user) return res.status(404).json({ err: 'Invalid user' })
-      if ( user.password === req.body.password ) {
-        const token = jwt.encode({
-          iss: req.body.username,
-          exp: tokenExpiry
-        }, JWT_TOKEN_SECRET)
+      console.log("User -------> 🌏", user)
+      user.set({ currentlyOnline: false }).save()
+      io.emit('removeUser', user)
 
-        user.set({ currentlyOnline: false }).save()
-        io.emit('addUser', user)
-
-        return res.status(200).json({
-          user,
-          id_token: token,
-          expires: tokenExpiry
-        })
-      }
+      return res.status(200).json({ success: true })
     })
 }
