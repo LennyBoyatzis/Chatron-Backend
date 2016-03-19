@@ -10,7 +10,6 @@ module.exports = (req, res) => {
       if (err) return res.status(500).json(err)
       if (!users) return res.status(404).json({ err: 'No users available' })
 
-      console.log("Here are all the users currently online ---->", users)
       return res.status(200).json(users)
     })
 }
