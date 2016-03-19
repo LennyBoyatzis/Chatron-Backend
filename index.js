@@ -32,7 +32,7 @@ function start () {
   app.post('/api/signup', require('./api/signup'));
   app.post('/api/sessions/create', require('./api/session/create'));
   app.post('/api/sessions/close', require('./api/session/close'));
-  app.get('/api/user/get', require('./api/user/get'));
+  app.get('/api/users/get', require('./api/user/get'));
   app.use((req, res) => res.status(404).json({ error: '404 Not Found' }))
 
   io.on('connection', (socket) => {
